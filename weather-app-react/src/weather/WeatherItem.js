@@ -1,19 +1,27 @@
 import React from "react";
+import PropTypes from "prop-types"
 
-export default function WeatherItem() {
+
+function WeatherItem({item}) {
     return(
         <>
         <div className="city">
-            <span>Kyiv</span>
-            <sup>UA</sup>
+            <span>{item.city}</span>
+            <sup>{item.country}</sup>
         </div>
         <div className="temp">
-            13<sup>°C</sup>
+            {item.temp}<sup>°C</sup>
         </div>
         <div className="weather">
-            <img className="icon" src='' />
-            <span>SUNNY</span>
+            <img className="icon" src={item.icon} />
+            <span>{item.description}</span>
         </div>
         </>
     )
 }
+
+WeatherItem.propTypes = {
+    item: PropTypes.object.isRequired
+}
+
+export default WeatherItem

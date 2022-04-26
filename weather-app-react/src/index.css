@@ -116,7 +116,7 @@ form button{
 
 .cards{
   background-color: white;
-  float: left;
+  /* float: left; */
   padding: 40px 25px;
   border-radius: 20px;
   position: relative;

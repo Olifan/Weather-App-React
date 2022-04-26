@@ -1,25 +1,35 @@
-import logo from './logo.svg';
+import React, {useEffect} from 'react';
 import './App.css';
 import WeatherList from './weather/WeatherList';
+import AddItem from './weather/AddItem';
 
 function App() {
+
+  const [items, setItems] = React.useState([
+    {city: 'London', country: 'UK', temp: 10, icon: '', description:'Sunny'}
+  ])
+
+  
+
+  function addItem(city){
+    setItems(items.concat([{
+      city
+    }]))
+
+  }
+
   return (
     <div>
       <div className="container">
         <div className="header">
           <h1>Simple Weather App</h1>
         </div>
-
-        <form id="searchForm">
-          <input type="text" name="search" placeholder="Search for a city" autofocus=""/>
-          <button type="submit">SUBMIT</button>
-          <span className="message"></span>
-          </form>
+        <AddItem onCreate={addItem}/>
       </div>
 
       <div className="container">
         <div className="content">
-          <WeatherList/>
+          <WeatherList items={items}/>
         </div>
       </div>
       
