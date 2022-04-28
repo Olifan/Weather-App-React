@@ -6,14 +6,14 @@ import AddItem from './weather/AddItem';
 function App() {
 
   const [items, setItems] = React.useState([
-    {city: 'London', country: 'UK', temp: 10, icon: '', description:'Sunny'}
+    // {city: 'London', country: 'UK', temp: 10, icon: '', description:'Sunny'}
   ])
 
   
 
-  function addItem(city){
+  function addItem(city, country, temp, icon, description){
     setItems(items.concat([{
-      city
+      city, country, temp, icon, description
     }]))
 
   }

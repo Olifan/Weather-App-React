@@ -17,22 +17,30 @@ function useInputValue(defaultValue = '') {
 
 function AddItem({onCreate}) {
   const input = useInputValue('')
+  const [data, setData] = useState()
 
   function submitHandler(event){
     event.preventDefault()
 
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input.value()}&appid=4d8fb5b93d4af21d66a2948710284366&units=metric`)
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input.value()}&appid=dc4a159c14374d585f7cdb4ed8afbf60&units=metric`)
     .then(res => res.json())
     .then(data => {
+      setData(data)
       console.log(data);
-      const { main, name, sys, weather } = data;
-      const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${weather[0]["icon"]}.svg`;
+      // const { main, name, sys, weather } = data;
+      // const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${weather[0]["icon"]}.svg`;
+      console.log(data.name, data.sys.country)
     })
-    
   
-    if(input.value().trim()){
-      onCreate(input.value())
-      input.clear()       
+    if(input.value() !== ''){
+      onCreate(
+        data.name, 
+        data.sys.country, 
+        Math.round(data.main.temp), 
+        `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${data.weather[0]["icon"]}.svg`, 
+        data.weather[0].description)
+
+        input.clear()       
       
     }
   }
@@ -48,6 +56,7 @@ function AddItem({onCreate}) {
           <button type="submit">SUBMIT</button>
           <span className="message"></span>
         </form>
+        
     )
 }
 
