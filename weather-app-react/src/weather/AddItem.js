@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types"
 
 
+
 function useInputValue(defaultValue = '') {
   const [value, setValue] = useState(defaultValue)
 
@@ -17,28 +18,24 @@ function useInputValue(defaultValue = '') {
 
 function AddItem({onCreate}) {
   const input = useInputValue('')
-  const [data, setData] = useState()
+  // const [data, setData] = useState()
 
-  function submitHandler(event){
+  async function submitHandler(event){
     event.preventDefault()
 
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input.value()}&appid=dc4a159c14374d585f7cdb4ed8afbf60&units=metric`)
-    .then(res => res.json())
-    .then(data => {
-      setData(data)
+    let res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input.value()}&appid=dc4a159c14374d585f7cdb4ed8afbf60&units=metric`)
+    let data = await res.json()
       console.log(data);
-      // const { main, name, sys, weather } = data;
-      // const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${weather[0]["icon"]}.svg`;
       console.log(data.name, data.sys.country)
-    })
-  
+    
     if(input.value() !== ''){
       onCreate(
         data.name, 
         data.sys.country, 
         Math.round(data.main.temp), 
         `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${data.weather[0]["icon"]}.svg`, 
-        data.weather[0].description)
+        data.weather[0].description
+        )
 
         input.clear()       
       
