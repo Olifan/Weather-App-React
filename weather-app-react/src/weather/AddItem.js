@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types"
-
+import WeatherList from "./WeatherList";
+import WeatherItem from "./WeatherItem";
 
 
 function useInputValue(defaultValue = '') {
@@ -18,17 +19,22 @@ function useInputValue(defaultValue = '') {
 
 function AddItem({onCreate}) {
   const input = useInputValue('')
-  // const [data, setData] = useState()
+  const [message, setMessage] = useState('')
+
 
   async function submitHandler(event){
     event.preventDefault()
 
-    let res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input.value()}&appid=dc4a159c14374d585f7cdb4ed8afbf60&units=metric`)
-    let data = await res.json()
-      console.log(data);
-      console.log(data.name, data.sys.country)
-    
-    if(input.value() !== ''){
+    if(!input.value() || input.value() === ''){
+      setMessage('Please search for a valid city 😩')
+    }else if(input.value() === WeatherItem.key){
+      setMessage(`You already know the weather for ${input.value()}
+      ...otherwise be more specific by providing the country code as well 😉`)
+    }
+    else {
+      let res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input.value()}&appid=dc4a159c14374d585f7cdb4ed8afbf60&units=metric`)
+      let data = await res.json()
+
       onCreate(
         data.name, 
         data.sys.country, 
@@ -37,8 +43,8 @@ function AddItem({onCreate}) {
         data.weather[0].description
         )
 
-        input.clear()       
-      
+        input.clear()   
+        setMessage('')
     }
   }
 
@@ -51,7 +57,7 @@ function AddItem({onCreate}) {
           placeholder="Search for a city" 
           autofocus=""/>
           <button type="submit">SUBMIT</button>
-          <span className="message"></span>
+          <span className="message">{message}</span>
         </form>
         
     )
